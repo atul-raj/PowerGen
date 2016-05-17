@@ -1,0 +1,298 @@
+<!DOCTYPE>
+<html ng-app="myApp">
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
+
+<title>Power Gen</title>
+</head>
+<body>
+	<div class="container" ng-controller="AppCtrl">
+	<div class="well well-sm">
+	<h1>Power Gen</h1>
+	<p> Monitor and Control using predictive analysis </p>
+	</div>
+	
+	<section >
+		<ul  class="nav nav-pills nav-justified" ng-init="tab = 1">
+			<li ng-class="{active:tab===1}"> 
+				<a  href ng-click="tab = 1">Status</a>	
+			</li>
+			<li ng-class="{active:tab===2}"> 
+				<a  href ng-click="tab = 2">Report</a> 
+			</li>
+			<li ng-class="{active:tab===3}"> 
+				<a  href ng-click="tab = 3; prediction();"  >Predictions</a> 
+			</li>
+			<br><br>
+	
+              		
+      <div ng-show="tab === 1">
+      
+
+		<table class="table  table-bordered table-hover">
+				<thead>
+				<tr class ="info">
+				    <th>Turbine Id</th>
+					<th>Site Name</th>					
+					<th>Customer Name</th>
+					<th>Project Name</th>
+					<th>Power Generated</th>
+					<th>Status</th>
+					<th>Time-stamp</th>
+					<!-- <th>Action</th>
+					<th>&nbsp;</th> -->
+				</tr>
+			</thead>
+			<tbody>
+				<!-- <tr><td><input class="form-control" ng-model="contact.turbineID"></td>
+					<td><input class="form-control" ng-model="contact.siteName"></td>
+					<td><input class="form-control" ng-model="contact.customerName"></td>
+					<td><input class="form-control" ng-model="contact.projectName"></td>
+					<td><input class="form-control" ng-model="contact.powerGenerated"></td>
+					<td><input class="form-control" ng-model="contact.status"></td>
+					<td><input class="form-control" ng-model="contact.timeStamp"></td>
+					<td><button class="btn btn-primary" ng-click="addContact()">Add
+							Record</button></td>
+					<td><button class="btn btn-info" ng-click="update()">Update</button>&nbsp;&nbsp;
+						<button class="btn btn-info" ng-click="deselect()">Clear</button></td>
+				</tr> -->
+				<tr class ="info" ng-repeat="contact in latestTurbineList">
+				    <td>{{contact.turbineID}}</td>
+					<td>{{contact.siteName}}</td>
+					<td>{{contact.customerName}}</td>
+					<td>{{contact.projectName}}</td>
+					<td>{{contact.powerGenerated}}</td>
+					<td>{{contact.status === "1" ? "Online" : "Not running"}}</td>
+					<td>{{contact.timeStamp}}</td>
+					<!-- <td><button class="btn btn-danger"
+							ng-click="remove(contact._id)">Remove</button></td>
+					<td><button class="btn btn-warning"
+							ng-click="edit(contact._id)">Edit</button></td> -->
+				</tr>
+				</tbody>
+				
+		</table>
+		
+		
+		
+		
+	</div>
+	
+         <div ng-show="tab === 2">
+       
+  <!--         <h2><span class="label label-primary">Report of turbine </span></h2> -->
+          <p>
+          <output class="bg-info">Total Power Generated: <span class="label label-info"> {{myTotal}} kW </span>   &nbsp;&nbsp;
+		Total Active Turbines: <span class="label label-info">{{totalActiveTurbines}} </span> &nbsp; &nbsp;
+	Total Inactive Turbines: <span class="label label-danger"> {{totalInactiveTurbines}} </span>&nbsp; &nbsp;
+	Total Latest Turbines:<span class="label label-info"> {{totalTurbines}}</span></output></p>
+		
+			
+    <div class="panel panel-danger">
+      <div class="panel-heading"><h4>Inactive Turbine list</h4></div>
+      <div class="panel-body">
+		
+		
+
+		<table class="table table-bordered table-hover">
+				<thead>
+				<tr class ="danger">
+				    <th>Turbine Id</th>
+					<th>Site Name</th>					
+					<th>Customer Name</th>
+					<th>Project Name</th>
+					
+					<th>Status</th>
+					<th>Time-stamp</th>
+					<th>Action</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				
+				<tr class="danger" ng-repeat="contact in inactiveTurbineList">
+				    <td>{{contact.turbineID}}</td>
+					<td>{{contact.siteName}}</td>
+					<td>{{contact.customerName}}</td>
+					<td>{{contact.projectName}}</td>
+				   	<td>{{contact.status === "1" ? "Online" : "Not running"}}</td>
+					<td>{{contact.timeStamp}}</td>
+					<td><button class="btn btn-danger"
+							ng-click="">Alert to system Engg</button></td>
+				
+				</tr>
+				</tbody>
+				
+		</table>
+		</div>
+		</div>
+				
+    <div class="panel panel-warning">
+      <div class="panel-heading"><h4>Inefficient Turbine list</h4></div>
+      <div class="panel-body">
+		
+		
+		
+
+		<table class="table table-bordered ">
+				<thead>
+				<tr class ="warning">
+				    <th>Turbine Id</th>
+					<th>Site Name</th>					
+					<th>Customer Name</th>
+					<th>Project Name</th>
+					<th>Power Generated</th>
+					<th>Status</th>
+					<th>Time-stamp</th>
+					<th>Action</th>
+					
+				</tr>
+			</thead>
+			<tbody>
+				
+				<tr class="warning" ng-repeat="contact in inEfficientTurbines">
+				    <td>{{contact.turbineID}}</td>
+					<td>{{contact.siteName}}</td>
+					<td>{{contact.customerName}}</td>
+					<td>{{contact.projectName}}</td>
+					 <td>{{contact.powerGenerated}}</td>
+					<td>{{contact.status === "1" ? "Online" : "Not running"}}</td>
+					<td>{{contact.timeStamp}}</td>
+					<td><button class="btn btn-warning"
+							ng-click="">Alert to Maintenance team</button></td>
+				
+				</tr>
+				</tbody>
+				
+		</table>
+          </div>
+          </div>
+        </div>
+        
+        <div ng-show="tab === 3">
+        
+        <!-- <h2><span class="label label-primary"> Predictions of Turbine</span></h2> -->
+     <!--   <output>Total Turbines: {{totalTurbines1}}</output> -->
+        <output class="bg-success">Total Predicted online Turbines: <span class="label label-success"> {{predictedOnlineTurbines.length}}</span></output>
+        <output class="bg-danger">Total Predicted offline Turbines: <span class="label label-danger"> {{predictedOfflineTurbines.length}}</span></output>
+        <output class="bg-info">Total Predicted average Power generation:<span class="label label-info"> {{avgttlprdctdpower}} kW</span></output>
+        <output class="bg-warning">Total inefficient turbines in last 24 hrs: <span class="label label-warning">{{reportedinefficentTurbines.length}}</span></output>
+      &nbsp; &nbsp;
+        <div class="panel panel-success">
+      <div class="panel-heading"><h4>Predicted online Turbines</h4></div>
+      <div class="panel-body">
+       
+        <table class="table  table-bordered table-hover">
+				<thead>
+				<tr class ="success">
+				    <th>Turbine Id</th>
+					<th>Site Name</th>					
+					<th>Customer Name</th>
+					<th>Project Name</th>
+					<th>Avg Power Generated</th>
+									
+				</tr>
+			</thead>
+			<tbody>
+			
+				<tr class="success" ng-repeat="contact in predictedOnlineTurbines">
+				    <td>{{contact.turbineID}}</td>
+					<td>{{contact.siteName}}</td>
+					<td>{{contact.customerName}}</td>
+					<td>{{contact.projectName}}</td>
+					<td>{{contact.powerGenerated}}</td>
+					
+					
+				</tr>
+				</tbody>
+				
+		</table>
+		</div>
+    </div>
+    <div class="panel panel-danger">
+      <div class="panel-heading"><h4>Predicted offline Turbines</h4></div>
+      <div class="panel-body">
+		
+        <table class="table  table-bordered table-hover">
+				<thead>
+				<tr class="danger">
+				    <th>Turbine Id</th>
+					<th>Site Name</th>					
+					<th>Customer Name</th>
+					<th>Project Name</th>
+					<th>Action</th>									
+				</tr>
+			</thead>
+			<tbody>
+			
+				<tr class="danger" ng-repeat="contact in predictedOfflineTurbines">
+				    <td>{{contact.turbineID}}</td>
+					<td>{{contact.siteName}}</td>
+					<td>{{contact.customerName}}</td>
+					<td>{{contact.projectName}}</td>
+					<td><button class="btn btn-danger"
+							ng-click="">Alert to system Engg</button></td>	
+					
+				</tr>
+				</tbody>
+				
+		</table>
+			</div>
+    </div>
+    <div class="panel panel-warning">
+      <div class="panel-heading"><h4>Inefficient Turbines for last 24 hrs</h4></div>
+      <div class="panel-body">
+		
+        <table class="table  table-bordered table-hover">
+				<thead>
+				<tr class="warning">
+				    <th>Turbine Id</th>
+					<th>Site Name</th>					
+					<th>Customer Name</th>
+					<th>Project Name</th>
+					<th>Avg Power Generated</th>
+					<th>Action</th>					
+				</tr>
+			</thead>
+			<tbody>
+			
+				<tr class="warning" ng-repeat="contact in reportedinefficentTurbines">
+				    <td>{{contact.turbineID}}</td>
+					<td>{{contact.siteName}}</td>
+					<td>{{contact.customerName}}</td>
+					<td>{{contact.projectName}}</td>
+					<td>{{contact.powerGenerated}}</td>
+					<td><button class="btn btn-warning"
+							ng-click="">Alert to Maintenance team</button></td>
+					
+				</tr>
+				</tbody>
+				
+		</table>
+		</div>
+		</div>
+        </div>
+       
+    </ul>		
+	</section>	  
+    
+      </div>
+	
+	
+				
+				
+			
+	<script
+		src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
+	<script src="controllers/controller.js"></script>
+<!-- 	<link rel="stylesheet" type="text/css" href="CSS/main.css"> -->
+	 
+</body>
+</html>
