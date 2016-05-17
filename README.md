@@ -1,9 +1,9 @@
-# MEAN Stack RESTful API Tutorial - Contact List App
-<h2>MEAN Stack RESTful API Tutorial - Contact List App</h2>
+# MEAN Stack 
+<h2>MEAN Stack Power Gen</h2>
 
-<img src="http://i288.photobucket.com/albums/ll175/michaelcheng429/meanstacktutorial_zpsu72ixs47.png" alt="mean stack tutorial app">
 
-This repo contains the code for a RESTful API Contact List App that was built using the MEAN stack:
+
+This repo contains the code for a RESTful API Power Gen App that was built using the MEAN stack:
 
 <ul>
 <li>MongoDB</li>
